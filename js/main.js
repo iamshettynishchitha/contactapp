@@ -1,23 +1,23 @@
-var contacts = [
-    {"name":"Nireeksha","email":"nire@gmail.com","mobile":"7777777775"},
-    {"name":"Roopika","email":"roopi@gmail.com","mobile":"7777777774"},
-    {"name":"Rithika","email":"rithi@gmail.com","mobile":"7777777773"},
-    {"name":"Thrisha","email":"thrish@gmail.com","mobile":"7777777772"}    
-];
-
+if(localStorage.getItem("contacts")==null)
+    localStorage.setItem("contacts",JSON.stringify([]));
 var tempIndex = -1;
+
 function addContact(){
-    contact = getContact();
+   var contact = getContact();
+    var contacts = getDataFromLocalStorage();
     contacts.push(contact);
-     var cname = document.getElementById("cname").value = '';
-     var email = document.getElementById("email").value = '';
-     var mobile = document.getElementById("mobile").value = '';
+    updateDataToLocalStorage(contacts);
+     clearFormData();
     viewData();
 }
 
 function viewData(){
+    var contacts = getDataFromLocalStorage();
     var data = "";
-    data += "<table>"
+    if(contacts.length == 0){
+        data = "Contacts not yet added...."
+    }else{
+    data += "<table id = 'contacts'>"
     for( var i = 0; i < contacts.length; i++){
         data += "<tr>";
         data += "<td>" + contacts[i].name + "</td>";
@@ -27,12 +27,14 @@ function viewData(){
          data += "<td><button onclick=deleteContact(" + i + ")>Delete</button></td>";
         data += "</tr>";
     }
-    data += "</table>";
+    data += "</table>";    
+    }
     document.getElementById("content").innerHTML = data;
 }
 viewData();
 
 function editContact(index){
+    var contacts = getDataFromLocalStorage();
    contact = contacts[index];
     tempIndex = index;
     document.getElementById('cname').value =contact.name;
@@ -40,28 +42,41 @@ function editContact(index){
     document.getElementById('mobile').value = contact.mobile;
     document.getElementById("add").style.display = "none";
     document.getElementById("update").style.display = "block";
-    
 }
 function updateContact(){
+    var contacts = getDataFromLocalStorage();
     contact = getContact();
     contacts.splice(tempIndex,1,contact);
-    document.getElementById('cname').value = '';
-     document.getElementById('email').value = '';
-     document.getElementById('mobile').value = '';
+    updateDataToLocalStorage(contacts);
+    clearFormData();
     document.getElementById("add").style.display = "block";
     document.getElementById("update").style.display = "none";
     viewData();
 }
 
 function deleteContact(index){
+    var contacts = getDataFromLocalStorage();
        contacts.splice(index,1);
+    updateDataToLocalStorage(contacts);
     viewData();
 }
 function getContact(){
     var cname = document.getElementById("cname").value;
      var email = document.getElementById("email").value;
      var mobile = document.getElementById("mobile").value;
-    contact = {"name":cname,"email":email,"mobile":mobile};
+   var contact = {"name":cname,"email":email,"mobile":mobile};
     return contact;
+}
+function clearFormData(){
+    var cname = document.getElementById("cname").value = '';
+     var email = document.getElementById("email").value = '';
+     var mobile = document.getElementById("mobile").value = '';
+}
+function getDataFromLocalStorage(){
+   var contacts = JSON.parse(localStorage.getItem("contacts"));
+    return contacts;
+}
+function updateDataToLocalStorage(updatedData){
+    localStorage.setItem("contacts",JSON.stringify(updatedData));
 }
 

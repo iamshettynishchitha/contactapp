@@ -8,3 +8,30 @@ h3{
 #update{
 display: none;
 }
+table{
+    margin-left: 10%;
+    margin-right:10%;
+    width: 70%;
+}
+table td{
+    border-bottom: 1px solid gray;
+    padding: 10px;
+}
+table tr:nth-child(even){
+    background-color: #f2f2f2f2;
+}
+table tr:hover{
+    background-color:orchid;
+}
+input {
+    width: 200px;
+    height: 20px;
+    border: 1px solid blue;
+    text-align: center;
+}
+table td button{
+    width: 60px;
+    height: 30px;
+    color: white;
+    background-color: blue;
+}
